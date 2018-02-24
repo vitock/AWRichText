@@ -151,6 +151,57 @@ NSString *AWRTComponentDefaultMode = @"aw_rt_default_mode";
     };
 }
 
+-(AWRTComponentChain) AWShowBorder{
+    return ^(id showborder){
+        if ([showborder respondsToSelector:@selector(integerValue)]) {
+            self.showBorder = [showborder integerValue];
+        }
+        return self;
+    };
+}
+-(AWRTComponentChain) AWBorderCorner{
+    return ^(id corner){
+        if ([corner respondsToSelector:@selector(unsignedIntegerValue)]) {
+            self.borderCorner = [corner unsignedIntegerValue];
+        }
+        return self;
+    };
+}
+-(AWRTComponentChain) AWBorderEdge{
+    return ^(id edge){
+        if ([edge respondsToSelector:@selector(UIEdgeInsetsValue)]) {
+            self.borderEdge = [edge UIEdgeInsetsValue];
+        }
+        return self;
+    };
+}
+-(AWRTComponentChain) AWBorderColor{
+    return ^(id color){
+        if ([color isKindOfClass:[UIColor class]]) {
+            self.borderColor = color;
+        }
+        return self;
+    };
+}
+-(AWRTComponentChain) AWBorderWidth{
+    return ^(id v){
+        if ([v respondsToSelector:@selector(floatValue)]) {
+            self.borderWidth = [v floatValue];
+        }
+        return self;
+    };
+}
+
+-(AWRTComponentChain) AWBorderRadius{
+    return ^(id v){
+        if ([v respondsToSelector:@selector(floatValue)]) {
+            self.borderRadius = [v floatValue];
+        }
+        return self;
+    };
+}
+
+
 #pragma mark - pading help methods
 
 -(NSString *)paddingStringWithCount:(NSInteger) count{
@@ -164,7 +215,11 @@ NSString *AWRTComponentDefaultMode = @"aw_rt_default_mode";
     return nil;
 }
 
--(NSAttributedString *) applyPaddingForAttributedString:(NSAttributedString *)as{
+-(NSAttributedString *) applyPaddingForAttributedString:(NSMutableAttributedString *)as{
+    
+    if (as ) {
+        [as addAttribute:kGTCurrentMainCt value:@"current" range:NSMakeRange(0, as.length)];
+    }
     if (!self.paddingLeft && !self.paddingRight) {
         return as;
     }

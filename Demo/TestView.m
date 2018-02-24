@@ -163,9 +163,15 @@ static BOOL sAWTestAlwaysShowDebugFrame = NO;
 }
 
 -(void) createRichText{
-    [self addTextCompWithText:@"曲曲折折的荷塘"];
+    [self addTextCompWithText:@"曲曲折折的荷塘"].AWStrokeColor([UIColor redColor]).AWStrokeWidth(@2);
     [self addImgCompWithImageName:@"hetang.png"];
-    [self addTextCompWithText:@"上面，"];
+    AWRTTextComponent *c = [self addTextCompWithText:@"上面，"]
+    .AWPaddingLeft(@1)
+    .AWPaddingRight(@1)
+    .AWShowBorder(@1)
+    .AWBorderCorner(@(UIRectCornerAllCorners))
+    .AWBorderRadius(@5);
+    
     [self addTextCompWithText:@"弥望的是田田的叶子"];
     [self addImgCompWithImageName:@"yezi.png"];
     [self addTextCompWithText:@"。叶子出水"];
@@ -177,7 +183,27 @@ static BOOL sAWTestAlwaysShowDebugFrame = NO;
     [self addTextCompWithText:@"中间，零星地点缀着些白花"];
     [self addImgCompWithImageName:@"hua.png"];
     [self addTextCompWithText:@"，有袅娜地开着的，有羞涩地打着朵儿"];
-    [self addImgCompWithImageName:@"guduo.png"];
+    AWRTImageComponent *ic = [self addImgCompWithImageName:@"guduo.png"];
+    ic.AWBounds([NSValue valueWithCGRect:CGRectMake(0, 0, 30, 30)]).AWBoundsDepend(@2).AWAlignment(@1);
+    
+    
+    
+    [ic storeAllAttributesToMode:DEFAULT_MODE replace:YES];
+    
+    [ic beginUpdateMode:@"11" block:^{
+        ic.AWImage([UIImage imageNamed:@"tiaowu.png"]);
+    }];
+    
+    ic.touchable = YES;
+    ic.touchCallback = ^(AWRTComponent *comp, AWRTLabelTouchEvent touchEvent) {
+        if(touchEvent == AWRTLabelTouchEventEndedOut || touchEvent == AWRTLabelTouchEventEndedIn || touchEvent == AWRTLabelTouchEventCancelled){
+            comp.currentMode = DEFAULT_MODE;
+        }
+        else{
+            comp.currentMode = @"11";
+        }
+    };
+    
     [self addTextCompWithText:@"的；"];
     UIFont *btnFont = nil;
     if (@available(iOS 8.2, *)) {

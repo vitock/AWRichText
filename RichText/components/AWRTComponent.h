@@ -5,7 +5,7 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#define kGTCurrentMainCt  @"kGTCurrentMainCt"
 typedef enum : NSUInteger {
     AWRTLabelTouchEventBegan,
     AWRTLabelTouchEventMoved,
@@ -41,8 +41,8 @@ static inline BOOL awIsTouchEnd(AWRTLabelTouchEvent touchEvent){
 @end
 
 extern const NSString *AWRTComponentDefaultMode;
-
-typedef id (^AWRTComponentChain)(id);
+@class AWRTComponent;
+typedef AWRTComponent* (^AWRTComponentChain)(id);
 
 @interface AWRTComponent : NSObject<NSCopying, NSCoding, AWRTComponentUpdateDelegate>
 
@@ -63,6 +63,16 @@ typedef id (^AWRTComponentChain)(id);
 /// 如paddingleft为1则表示此Component输出的富文本会在左侧添加1个空格。
 @property (nonatomic, unsafe_unretained) NSInteger paddingLeft;
 @property (nonatomic, unsafe_unretained) NSInteger paddingRight;
+
+
+@property (nonatomic, unsafe_unretained) BOOL showBorder;
+@property (nonatomic, unsafe_unretained) UIRectCorner borderCorner;
+@property (nonatomic, unsafe_unretained) UIEdgeInsets borderEdge;
+@property (nonatomic, unsafe_unretained) CGFloat borderRadius;
+@property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, unsafe_unretained) CGFloat borderWidth;
+
+
 
 #pragma mark - 更新及模式
 @property (nonatomic, copy) NSString *currentMode;
@@ -97,4 +107,17 @@ typedef id (^AWRTComponentChain)(id);
 -(AWRTComponentChain) AWPaddingLeft;
 -(AWRTComponentChain) AWDebugFrame;
 -(AWRTComponentChain) AWFont;
+
+
+-(AWRTComponentChain) AWShowBorder;
+-(AWRTComponentChain) AWBorderCorner;
+-(AWRTComponentChain) AWBorderEdge;
+-(AWRTComponentChain) AWBorderColor;
+-(AWRTComponentChain) AWBorderWidth;
+
+-(AWRTComponentChain) AWBorderRadius;
+
+
+ 
+
 @end

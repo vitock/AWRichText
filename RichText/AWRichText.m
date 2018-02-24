@@ -1070,6 +1070,36 @@ alwaysShowDebugFrame:alwaysShowDebugFrame
                 CGPathRelease(pathRef);
             }
             
+            if (comp.showBorder && ctRunAttributes[kGTCurrentMainCt]) {
+                CGContextSaveGState(context);
+                
+                UIColor *color = comp.borderColor;
+                if(color == nil){
+                    color = [UIColor redColor];
+                }
+                CGContextSetStrokeColorWithColor(context, [color CGColor]);
+                
+                CGFloat lineW = comp.borderWidth;
+                if(lineW == 0){
+                    lineW = 0.5;
+                }
+                CGContextSetLineWidth(context, lineW);
+                
+                CGRect rc = UIEdgeInsetsInsetRect(ctRunRect, comp.borderEdge);
+//                rc.origin.x
+                
+                
+                UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rc  byRoundingCorners:comp.borderCorner cornerRadii:CGSizeMake(comp.borderRadius, comp.borderRadius)];
+                ;
+                
+                CGContextAddPath(context, [path CGPath]);
+                CGContextStrokePath(context);
+                
+                
+                CGContextRestoreGState(context);
+                
+            }
+            
             ///8.5.7 绘制图片 & UIView
             CTRunDelegateRef delegate = (__bridge CTRunDelegateRef)[ctRunAttributes valueForKey:(id)kCTRunDelegateAttributeName];
             if (!delegate) {
